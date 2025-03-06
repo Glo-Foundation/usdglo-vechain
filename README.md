@@ -1,13 +1,29 @@
-# Sample Hardhat Project
+# Deploying Glo Dollar to VeChain
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+Deploy v1:
+`npx hardhat run scripts/deploy.ts --network vechain_mainnet`
 
-Try running some of the following tasks:
+Populate proxy address in `.env`
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+Grant upgrade role to the deployer wallet:
+`npx hardhat run scripts/assignUpgradeRole.ts --network vechain_testnet`
+
+Upgrade to version 2, and then to version 3:
+`npx hardhat run scripts/upgradeV2.ts --network vechain_testnet`
+`npx hardhat run scripts/upgradeV3.ts --network vechain_testnet`
+
+To verify upgrades completed:
+`npx hardhat run scripts/getProxyImplementationAddress.ts --network vechain_testnet`
+
+
+Assign all other roles
+
+`npx hardhat run scripts/assignMintRole.ts --network vechain_testnet`
+`npx hardhat run scripts/assignAdminRole.ts --network vechain_testnet`
+
+Revoke old roles from the deployer multisig
+
+
+Do a test mint with the new roles
+
+`npx hardhat run scripts/mint.ts --network vechain_testnet`
